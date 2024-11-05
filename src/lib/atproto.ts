@@ -334,6 +334,9 @@ export class ATProtoOAuthClient {
             signal: AbortSignal.timeout(5000),
         });
         if (!response.ok) {
+            if (response.body !== null) {
+                response.body.cancel();
+            }
             throw new Error("Failed to create authorization request");
         }
         if (response.body === null) {

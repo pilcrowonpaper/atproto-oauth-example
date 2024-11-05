@@ -23,6 +23,7 @@ export async function GET() {
         scope: ["atproto", "transition:generic"],
         response_type: ["code"],
         redirect_uris: [productionOAuthRedirectURI()],
+        token_endpoint_auth_method: "private_key_jwt",
         token_endpoint_auth_signing_alg: "ES256",
         dpop_bound_access_tokens: true,
         jwks: [publicKeyJWK],
