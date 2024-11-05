@@ -1,6 +1,6 @@
 # AT Protocol OAuth demo
 
-A demo for AT Protocol (BlueSky) using Astro. This demo does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs and should run in other runtimes (including Cloudflare Workers).
+A demo for AT Protocol (BlueSky) using Astro. This demo does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs (except for `process.env`) and should run in other runtimes (including Cloudflare Workers).
 
 Not tested, but it should work PDS and authorization servers not hosted by BlueSky.
 
