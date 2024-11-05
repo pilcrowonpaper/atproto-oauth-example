@@ -53,7 +53,7 @@ Also set a `OAUTH_KEY_PAIR_ID` environment variable. This will be the public ID 
 OAUTH_KEY_PAIR_ID="banana"
 ```
 
-Finally, set your site's public URL:
+Finally, set your site's public URL (make sure to include `https://`):
 
 ```bash
 PUBLIC_URL="https://example.com"
