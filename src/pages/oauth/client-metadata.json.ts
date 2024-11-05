@@ -26,7 +26,9 @@ export async function GET() {
         token_endpoint_auth_method: "private_key_jwt",
         token_endpoint_auth_signing_alg: "ES256",
         dpop_bound_access_tokens: true,
-        jwks: [publicKeyJWK],
+        jwks: {
+            keys: [publicKeyJWK]
+        },
     });
     const response = new Response(data);
     response.headers.set("Content-Type", "application/json");
