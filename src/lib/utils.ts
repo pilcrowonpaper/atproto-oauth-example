@@ -79,5 +79,5 @@ export async function createECDSAPublicKeyJWKWithId(
 }
 
 export function envvar(name: string): string | null {
-    return import.meta.env[name] ?? null;
+    return import.meta.env[name] ?? process.env[name] ?? null;
 }
