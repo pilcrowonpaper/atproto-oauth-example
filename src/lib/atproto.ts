@@ -284,7 +284,6 @@ export class ATProtoOAuthClient {
 		});
 		request.headers.set("Content-Type", "application/x-www-form-urlencoded");
 		request.headers.set("Accept", "application/json");
-		request.headers.set("User-Agent", "demo");
 		const response = await fetch(request, {
 			signal: AbortSignal.timeout(5000),
 		});

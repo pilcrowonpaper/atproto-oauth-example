@@ -1,6 +1,6 @@
-# AT Protocol OAuth demo
+# AT Protocol OAuth example
 
-A demo for AT Protocol (BlueSky) OAuth using Astro. This demo does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs (except for `process.env`) and should run in other runtimes (including Cloudflare Workers).
+An example implementation of AT Protocol (BlueSky) OAuth client using Astro. This example does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs (except for `process.env`) and should run in other runtimes (including Cloudflare Workers).
 
 Not tested, but it should work PDS and authorization servers not hosted by BlueSky.
 
@@ -15,9 +15,9 @@ pnpm dev
 
 ## Deploying to production
 
-This demo acts as a confidential OAuth client when deployed.
+This example uses confidential OAuth clients when deployed.
 
-The AT Protocol requires confidential clients to use signed JWTs for authentication and this demo uses JWTs signed with ECDSA with the P-256 curve. Generate a private and public key with `openssl`:
+The AT Protocol requires confidential clients to use signed JWTs for authentication and this example uses JWTs signed with ECDSA with the P-256 curve. Generate a private and public key with `openssl`:
 
 ```
 openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -pkeyopt ec_param_enc:named_curve | openssl pkcs8 -topk8 -nocrypt -outform pem > oauth-private-key.pem
