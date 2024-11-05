@@ -48,7 +48,7 @@ export async function readAllStreamWithLimit(
     return buffer.bytes();
 }
 
-export async function getECDSAPublicKeyJWK(
+export async function createECDSAPublicKeyJWK(
     publicKey: CryptoKey
 ): Promise<object> {
     const webcryptoJWK = await crypto.subtle.exportKey("jwk", publicKey);
@@ -62,7 +62,7 @@ export async function getECDSAPublicKeyJWK(
     return jwk;
 }
 
-export async function getECDSAPublicKeyJWKWithId(
+export async function createECDSAPublicKeyJWKWithId(
     publicKey: CryptoKey,
     id: string
 ): Promise<object> {

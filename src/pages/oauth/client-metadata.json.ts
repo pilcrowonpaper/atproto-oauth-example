@@ -3,7 +3,7 @@ import {
     productionOAuthClientId,
     productionOAuthRedirectURI,
 } from "../../lib/oauth";
-import { getECDSAPublicKeyJWKWithId } from "../../lib/utils";
+import { createECDSAPublicKeyJWKWithId } from "../../lib/utils";
 
 export async function GET() {
     const keyPair = await getOAuthKeyPair();
@@ -12,7 +12,7 @@ export async function GET() {
             status: 404,
         });
     }
-    const publicKeyJWK = await getECDSAPublicKeyJWKWithId(
+    const publicKeyJWK = await createECDSAPublicKeyJWKWithId(
         keyPair.publicKey,
         keyPair.id
     );

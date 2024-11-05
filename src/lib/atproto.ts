@@ -1,6 +1,6 @@
 import { ObjectParser } from "@pilcrowjs/object-parser";
 import {
-    getECDSAPublicKeyJWK,
+    createECDSAPublicKeyJWK,
     joinURIBaseAndPath,
     readAllStreamWithLimit,
 } from "./utils";
@@ -552,7 +552,7 @@ export async function createDPOP(
 ): Promise<string> {
     const bytes = new Uint8Array(20);
     crypto.getRandomValues(bytes);
-    const publicKeyJWK = await getECDSAPublicKeyJWK(keyPair.publicKey);
+    const publicKeyJWK = await createECDSAPublicKeyJWK(keyPair.publicKey);
     const headerJSON = JSON.stringify({
         typ: "dpop+jwt",
         alg: "ES256",
