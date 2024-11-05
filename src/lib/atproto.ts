@@ -335,7 +335,7 @@ export class ATProtoOAuthClient {
         });
         if (!response.ok) {
             if (response.body !== null) {
-                console.log(await response.json());
+                response.body.cancel();
             }
             throw new Error("Failed to create authorization request");
         }
@@ -368,6 +368,18 @@ export class ATProtoOAuthClient {
         body.set("code", code);
         body.set("code_verifier", codeVerifier);
         body.set("redirect_uri", this.redirectURI);
+        if (this.keyPair !== null) {
+            const clientAssertion = await createClientAssertion(
+                this.keyPair,
+                this.clientId,
+                this.authorizationServerIssuer
+            );
+            body.set(
+                "client_assertion_type",
+                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+            );
+            body.set("client_assertion", clientAssertion);
+        }
         let request = new Request(tokenEndpoint, {
             method: "POST",
             body,
@@ -405,6 +417,18 @@ export class ATProtoOAuthClient {
         body.set("client_id", this.clientId);
         body.set("refresh_token", refreshToken);
         body.set("redirect_uri", this.redirectURI);
+        if (this.keyPair !== null) {
+            const clientAssertion = await createClientAssertion(
+                this.keyPair,
+                this.clientId,
+                this.authorizationServerIssuer
+            );
+            body.set(
+                "client_assertion_type",
+                "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+            );
+            body.set("client_assertion", clientAssertion);
+        }
         let request = new Request(tokenEndpoint, {
             method: "POST",
             body,
