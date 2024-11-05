@@ -1,4 +1,3 @@
-import type { APIContext } from "astro";
 import {
     fetchProtectedResourceRequestWithDPOP,
     getATProtoAuthorizationServerMetadata,
@@ -7,6 +6,9 @@ import {
 import { createOAuthClient } from "../../lib/oauth";
 import { joinURIBaseAndPath, readAllStreamWithLimit } from "../../lib/utils";
 import { ObjectParser } from "@pilcrowjs/object-parser";
+
+import type { APIContext } from "astro";
+import type { ATProtoOAuthTokens } from "../../lib/atproto";
 
 export async function GET(context: APIContext): Promise<Response> {
     const storedState = context.cookies.get("state")?.value ?? null;
@@ -51,14 +53,20 @@ export async function GET(context: APIContext): Promise<Response> {
     const oauthClient = await createOAuthClient(
         authorizationServerMetadata.issuer
     );
-    let [tokens, authorizationServerDPOPNonce] =
-        await oauthClient.validateAuthorizationCode(
-            authorizationServerMetadata.tokenEndpoint,
-            dpopKeyPair,
-            code,
-            codeVerifier
-        );
-
+    let tokens: ATProtoOAuthTokens;
+    let authorizationServerDPOPNonce: string | null;
+    try {
+        [tokens, authorizationServerDPOPNonce] =
+            await oauthClient.validateAuthorizationCode(
+                authorizationServerMetadata.tokenEndpoint,
+                dpopKeyPair,
+                code,
+                codeVerifier
+            );
+    } catch (e) {
+        console.log(e);
+        return new Response("invalid request");
+    }
     if (storedDID !== tokens.did) {
         return new Response("invalid request", {
             status: 400,

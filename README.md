@@ -2,6 +2,8 @@
 
 A demo for AT Protocol (BlueSky) using Astro. This demo does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs and should run in other runtimes (including Cloudflare Workers).
 
+Not tested, but it should work PDS and authorization servers not hosted by BlueSky.
+
 ## Initialize locally
 
 Install dependencies and start the server at port 4321. If you'd like to use a different port, change all occurrences of port 4321 in the codebase.

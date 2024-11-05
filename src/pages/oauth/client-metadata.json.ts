@@ -5,7 +5,7 @@ import {
 } from "../../lib/oauth";
 import { createECDSAPublicKeyJWKWithId } from "../../lib/utils";
 
-export async function GET() {
+export async function GET(): Promise<Response> {
     const keyPair = await getOAuthKeyPair();
     if (keyPair === null) {
         return new Response(null, {
@@ -27,7 +27,7 @@ export async function GET() {
         token_endpoint_auth_signing_alg: "ES256",
         dpop_bound_access_tokens: true,
         jwks: {
-            keys: [publicKeyJWK]
+            keys: [publicKeyJWK],
         },
     });
     const response = new Response(data);
