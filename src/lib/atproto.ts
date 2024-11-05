@@ -335,7 +335,7 @@ export class ATProtoOAuthClient {
         });
         if (!response.ok) {
             if (response.body !== null) {
-                response.body.cancel();
+                console.log(await response.json());
             }
             throw new Error("Failed to create authorization request");
         }
