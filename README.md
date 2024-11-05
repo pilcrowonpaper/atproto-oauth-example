@@ -1,6 +1,6 @@
 # AT Protocol OAuth example
 
-An example implementation of AT Protocol (BlueSky) OAuth client using Astro. This example does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs (except for `process.env`) and should run in other runtimes (including Cloudflare Workers).
+An example implementation of an AT Protocol (BlueSky) OAuth client using Astro. This example does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs (except for `process.env`) and should run in other runtimes (including Cloudflare Workers).
 
 Not tested, but it should work PDS and authorization servers not hosted by BlueSky.
 
