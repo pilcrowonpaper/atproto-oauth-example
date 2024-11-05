@@ -1,49 +1,48 @@
 ---
+
 ---
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Astro</title>
-    </head>
-    <body>
-        <h1>Enter your handle</h1>
-        <form id="login-form">
-            <label for="handle">Handle</label>
-            <input id="handle" name="handle" />
-            <button>Continue</button>
-            <p id="login-message"></p>
-        </form>
-    </body>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Enter your handle</h1>
+		<form id="login-form">
+			<label for="handle">Handle</label>
+			<input id="handle" name="handle" />
+			<button>Continue</button>
+			<p id="login-message"></p>
+		</form>
+	</body>
 </html>
 
 <script>
-    const form = document.getElementById("login-form") as HTMLFormElement;
-    const message = document.getElementById(
-        "login-message"
-    ) as HTMLParagraphElement;
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        message.innerText = "Loading...";
-        const formData = new FormData(e.target as HTMLFormElement);
-        const handle = formData.get("handle");
-        const data = JSON.stringify({
-            handle: handle,
-        });
-        const response = await fetch("/login", {
-            method: "POST",
-            body: data,
-        });
-        if (response.status === 500) {
-            message.innerText = "An error occured";
-        } else if (!response.ok) {
-            message.innerText = await response.text();
-        } else {
-            const authorizationURL = await response.text();
-            window.location.href = authorizationURL;
-        }
-    });
+	const form = document.getElementById("login-form") as HTMLFormElement;
+	const message = document.getElementById("login-message") as HTMLParagraphElement;
+	form.addEventListener("submit", async (e) => {
+		e.preventDefault();
+		message.innerText = "Loading...";
+		const formData = new FormData(e.target as HTMLFormElement);
+		const handle = formData.get("handle");
+		const data = JSON.stringify({
+			handle: handle,
+		});
+		const response = await fetch("/login", {
+			method: "POST",
+			body: data,
+		});
+		if (response.status === 500) {
+			message.innerText = "An error occured";
+		} else if (!response.ok) {
+			message.innerText = await response.text();
+		} else {
+			const authorizationURL = await response.text();
+			window.location.href = authorizationURL;
+		}
+	});
 </script>
