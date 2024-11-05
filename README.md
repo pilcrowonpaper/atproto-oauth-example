@@ -1,47 +1,60 @@
-# Astro Starter Kit: Minimal
+# AT Protocol OAuth demo
 
-```sh
-npm create astro@latest -- --template minimal
+A demo for AT Protocol (BlueSky) using Astro. This demo does not use the AT Protocol SDK. It also doesn't use any Node-specific APIs and should run in other runtimes (including Cloudflare Workers).
+
+## Initialize locally
+
+Install dependencies and start the server at port 4321. If you'd like to use a different port, change all occurrences of port 4321 in the codebase.
+
+```
+pnpm i
+pnpm dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Deploying to production
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This demo acts as a confidential OAuth client when deployed.
 
-## 🚀 Project Structure
+The AT Protocol requires confidential clients to use signed JWTs for authentication and this demo uses JWTs signed with ECDSA with the P-256 curve. Generate a private and public key with `openssl`:
 
-Inside of your Astro project, you'll see the following folders and files:
+```
+openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -pkeyopt ec_param_enc:named_curve | openssl pkcs8 -topk8 -nocrypt -outform pem > oauth-private-key.pem
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+openssl ec -in oauth-private-key.pem -pubout > oauth-public-key.pem
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+This should generate 2 files: `oauth-private-key.pem` and `oauth-public-key.pem`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```
+-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgM5BHQhVKR9STxiJG
+IE+Jb/yxQvftew9HknEQUGaRsSqhRANCAAQH3r8GHE27Gsy0sHQRUSo9yqu8r58F
+nBuWEIaxldS8he/3ZVHUim7qXe9knTa1O2aHsIVTnC8FiZ6J0tvJecE8
+-----END PRIVATE KEY-----
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+```
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEB96/BhxNuxrMtLB0EVEqPcqrvK+f
+BZwblhCGsZXUvIXv92VR1Ipu6l3vZJ02tTtmh7CFU5wvBYmeidLbyXnBPA==
+-----END PUBLIC KEY-----
+```
 
-## 🧞 Commands
+Remove the header and footer from the `.pem` files and set the base64 encoded string as `OAUTH_PRIVATE_KEY` for the private key and as `OAUTH_PUBLIC_KEY` for the public key.
 
-All commands are run from the root of the project, from a terminal:
+```bash
+OAUTH_PRIVATE_KEY="MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg2TSHp7Ts79N/YjpwYRxEq5TtkSpPy4sTZMXUDjuzpbShRANCAAQhKtXbtf29s49xtrQM92GZfK25zgz4GfB7SmJkeTxwfM3yfkIxX9BIf2gYheR9hN5AITiobEQ2UNqw/X6eu+7B"
+OAUTH_PUBLIC_KEY="MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEISrV27X9vbOPcba0DPdhmXytuc4M+Bnwe0piZHk8cHzN8n5CMV/QSH9oGIXkfYTeQCE4qGxENlDasP1+nrvuwQ=="
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Also set a `OAUTH_KEY_PAIR_ID` environment variable. This will be the public ID of your key pair and does not need to be unguessable.
 
-## 👀 Want to learn more?
+```bash
+OAUTH_KEY_PAIR_ID="banana"
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Finally, set your site's public URL:
+
+```bash
+PUBLIC_URL="https://example.com"
+```

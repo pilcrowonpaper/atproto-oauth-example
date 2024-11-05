@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+oauth-private-key.pem
+oauth-public-key.pem

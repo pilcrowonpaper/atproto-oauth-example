@@ -10,8 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.16.8",
     "@astrojs/check": "^0.9.4",
+    "@astrojs/node": "^8.3.4",
+    "@oslojs/binary": "^1.0.0",
+    "@oslojs/encoding": "^1.1.0",
+    "@oslojs/jwt": "^0.2.0",
+    "@pilcrowjs/object-parser": "^0.0.4",
+    "astro": "^4.16.8",
     "typescript": "^5.6.3"
   }
 }
