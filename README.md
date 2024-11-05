@@ -45,8 +45,8 @@ BZwblhCGsZXUvIXv92VR1Ipu6l3vZJ02tTtmh7CFU5wvBYmeidLbyXnBPA==
 Remove the header and footer from the `.pem` files and set the base64 encoded string as `OAUTH_PRIVATE_KEY` for the private key and as `OAUTH_PUBLIC_KEY` for the public key.
 
 ```bash
-OAUTH_PRIVATE_KEY="MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg2TSHp7Ts79N/YjpwYRxEq5TtkSpPy4sTZMXUDjuzpbShRANCAAQhKtXbtf29s49xtrQM92GZfK25zgz4GfB7SmJkeTxwfM3yfkIxX9BIf2gYheR9hN5AITiobEQ2UNqw/X6eu+7B"
-OAUTH_PUBLIC_KEY="MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEISrV27X9vbOPcba0DPdhmXytuc4M+Bnwe0piZHk8cHzN8n5CMV/QSH9oGIXkfYTeQCE4qGxENlDasP1+nrvuwQ=="
+OAUTH_PRIVATE_KEY="MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgM5BHQhVKR9STxiJGIE+Jb/yxQvftew9HknEQUGaRsSqhRANCAAQH3r8GHE27Gsy0sHQRUSo9yqu8r58FnBuWEIaxldS8he/3ZVHUim7qXe9knTa1O2aHsIVTnC8FiZ6J0tvJecE8"
+OAUTH_PUBLIC_KEY="MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEB96/BhxNuxrMtLB0EVEqPcqrvK+fBZwblhCGsZXUvIXv92VR1Ipu6l3vZJ02tTtmh7CFU5wvBYmeidLbyXnBPA=="
 ```
 
 Also set a `OAUTH_KEY_PAIR_ID` environment variable. This will be the public ID of your key pair and does not need to be unguessable.
