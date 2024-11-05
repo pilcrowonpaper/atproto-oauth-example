@@ -20,7 +20,7 @@ export async function GET() {
         client_id: productionOAuthClientId(),
         application_type: "web",
         grant_types: ["authorization_code", "refresh_token"],
-        scope: ["atproto", "transition:generic"],
+        scope: ["atproto", "transition:generic"].join(" "),
         response_type: ["code"],
         redirect_uris: [productionOAuthRedirectURI()],
         token_endpoint_auth_method: "private_key_jwt",
