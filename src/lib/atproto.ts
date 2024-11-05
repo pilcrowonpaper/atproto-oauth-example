@@ -52,8 +52,7 @@ export async function resolveATProtoHandle(handle: string): Promise<string> {
                 const did = parseATProtoTXTDNSRecord(dnsRecord);
                 return did;
             }
-        }
-        if (txtFetchResult.value.body !== null) {
+        } else if (txtFetchResult.value.body !== null) {
             txtFetchResult.value.body.cancel();
         }
     }
@@ -70,8 +69,7 @@ export async function resolveATProtoHandle(handle: string): Promise<string> {
             );
             const did = new TextDecoder().decode(wellknownResultBytes);
             return did;
-        }
-        if (wellknownFetchResult.value.body !== null) {
+        } else if (wellknownFetchResult.value.body !== null) {
             wellknownFetchResult.value.body.cancel();
         }
     }
