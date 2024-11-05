@@ -38,7 +38,9 @@
             method: "POST",
             body: data,
         });
-        if (!response.ok) {
+        if (response.status === 500) {
+            message.innerText = "An error occured";
+        } else if (!response.ok) {
             message.innerText = await response.text();
         } else {
             const authorizationURL = await response.text();
