@@ -57,7 +57,7 @@ export async function getECDSAPublicKeyJWK(
         crv: webcryptoJWK.crv,
         x: webcryptoJWK.x,
         y: webcryptoJWK.y,
-        use: webcryptoJWK.use,
+        use: "sig",
     };
     return jwk;
 }
@@ -73,7 +73,7 @@ export async function getECDSAPublicKeyJWKWithId(
         crv: webcryptoJWK.crv,
         x: webcryptoJWK.x,
         y: webcryptoJWK.y,
-        use: webcryptoJWK.use,
+        use: "sig",
     };
     return jwk;
 }
