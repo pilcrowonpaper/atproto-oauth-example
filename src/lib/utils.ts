@@ -77,3 +77,7 @@ export async function createECDSAPublicKeyJWKWithId(
     };
     return jwk;
 }
+
+export function envvar(name: string): string | null {
+    return import.meta.env[name] ?? null;
+}

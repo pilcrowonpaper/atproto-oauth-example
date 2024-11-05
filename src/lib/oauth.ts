@@ -3,26 +3,24 @@ import {
     createLocalhostATProtoOAuthClient,
     ATProtoOAuthClient,
 } from "./atproto";
-import { joinURIBaseAndPath } from "./utils";
+import { envvar, joinURIBaseAndPath } from "./utils";
 
 import type { CryptoKeyPairWithId } from "./atproto";
 
-// TODO: Updated domain
 export function productionOAuthClientId(): string {
-    if (import.meta.env.PUBLIC_URL === undefined) {
+    const publicURL = envvar("PUBLIC_URL");
+    if (publicURL === null) {
         throw new Error("Public URL not defined");
     }
-    return joinURIBaseAndPath(
-        import.meta.env.PUBLIC_URL,
-        "/oauth/client-metadata.json"
-    );
+    return joinURIBaseAndPath(publicURL, "/oauth/client-metadata.json");
 }
 
 export function productionOAuthRedirectURI(): string {
-    if (import.meta.env.PUBLIC_URL === undefined) {
+    const publicURL = envvar("PUBLIC_URL");
+    if (publicURL === null) {
         throw new Error("Public URL not defined");
     }
-    return joinURIBaseAndPath(import.meta.env.PUBLIC_URL, "/login/callback");
+    return joinURIBaseAndPath(publicURL, "/login/callback");
 }
 
 export async function createOAuthClient(
@@ -40,7 +38,6 @@ export async function createOAuthClient(
     if (keyPair === null) {
         throw new Error("OAuth key not defined");
     }
-    // TODO: Updated domain
     const client = new ATProtoOAuthClient(
         authorizationServerIssuer,
         productionOAuthClientId(),
@@ -52,17 +49,19 @@ export async function createOAuthClient(
 
 const getOAuthKeyPairPromise = new Promise<CryptoKeyPairWithId | null>(
     async (resolve) => {
-        if (import.meta.env.OAUTH_PRIVATE_KEY === undefined) {
-            return resolve(null);
-        }
-        if (import.meta.env.OAUTH_PUBLIC_KEY === undefined) {
-            return resolve(null);
-        }
-        if (import.meta.env.OAUTH_KEY_PAIR_ID === undefined) {
+        const privateKeyBase64 = envvar("OAUTH_PRIVATE_KEY");
+        const publicKeyBase64 = envvar("OAUTH_PUBLIC_KEY");
+        const keyPairId = envvar("OAUTH_KEY_PAIR_ID");
+
+        if (
+            privateKeyBase64 === null ||
+            publicKeyBase64 === null ||
+            keyPairId === null
+        ) {
             return resolve(null);
         }
 
-        const derPrivateKey = decodeBase64(import.meta.env.OAUTH_PRIVATE_KEY);
+        const derPrivateKey = decodeBase64(privateKeyBase64);
         const privateKey = await crypto.subtle.importKey(
             "pkcs8",
             derPrivateKey,
@@ -74,7 +73,7 @@ const getOAuthKeyPairPromise = new Promise<CryptoKeyPairWithId | null>(
             ["sign"]
         );
 
-        const derPublicKey = decodeBase64(import.meta.env.OAUTH_PUBLIC_KEY);
+        const derPublicKey = decodeBase64(publicKeyBase64);
         const publicKey = await crypto.subtle.importKey(
             "spki",
             derPublicKey,
@@ -89,7 +88,7 @@ const getOAuthKeyPairPromise = new Promise<CryptoKeyPairWithId | null>(
         const keyPair: CryptoKeyPairWithId = {
             privateKey,
             publicKey,
-            id: import.meta.env.OAUTH_KEY_PAIR_ID,
+            id: keyPairId,
         };
         return resolve(keyPair);
     }
