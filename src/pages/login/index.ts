@@ -66,12 +66,5 @@ export async function POST(context: APIContext): Promise<Response> {
 		sameSite: "lax",
 		secure: !import.meta.env.DEV,
 	});
-	context.cookies.set("did", did, {
-		httpOnly: true,
-		path: "/",
-		maxAge: 60 * 10,
-		sameSite: "lax",
-		secure: !import.meta.env.DEV,
-	});
 	return new Response(authorizationURL.toString());
 }
