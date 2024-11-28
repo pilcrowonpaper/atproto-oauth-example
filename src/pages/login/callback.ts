@@ -1,6 +1,7 @@
 import {
 	fetchProtectedResourceRequestWithDPOP,
 	getATProtoAuthorizationServerMetadata,
+	getAuthorizationServer,
 	getPDSFromAccountDID,
 } from "../../lib/atproto";
 import { createOAuthClient } from "../../lib/oauth";
@@ -14,31 +15,24 @@ export async function GET(context: APIContext): Promise<Response> {
 	const storedState = context.cookies.get("state")?.value ?? null;
 	const codeVerifier = context.cookies.get("code_verifier")?.value ?? null;
 	const storedIssuer = context.cookies.get("issuer")?.value ?? null;
-	const storedDID = context.cookies.get("did")?.value ?? null;
-	if (
-		storedState === null ||
-		codeVerifier === null ||
-		storedIssuer === null ||
-		storedDID === null
-	) {
+	if (storedState === null || codeVerifier === null || storedIssuer === null) {
 		return new Response("invalid request", {
 			status: 400,
 		});
 	}
 	const code = context.url.searchParams.get("code");
 	const state = context.url.searchParams.get("state");
-	const issuer = context.url.searchParams.get("iss");
-	if (code === null || state === null || issuer === null) {
+	if (code === null || state === null) {
 		return new Response("invalid request", {
 			status: 400,
 		});
 	}
-	if (storedState !== state || storedIssuer !== issuer) {
+	if (storedState !== state) {
 		return new Response("invalid request", {
 			status: 400,
 		});
 	}
-	const authorizationServerMetadata = await getATProtoAuthorizationServerMetadata(issuer);
+	const authorizationServerMetadata = await getATProtoAuthorizationServerMetadata(storedIssuer);
 
 	const dpopKeyPair = await crypto.subtle.generateKey(
 		{
@@ -63,7 +57,9 @@ export async function GET(context: APIContext): Promise<Response> {
 		console.log(e);
 		return new Response("invalid request");
 	}
-	if (storedDID !== tokens.did) {
+	const pds = await getPDSFromAccountDID(tokens.did);
+	const issuer = await getAuthorizationServer(pds);
+	if (storedIssuer !== issuer) {
 		return new Response("invalid request", {
 			status: 400,
 		});
